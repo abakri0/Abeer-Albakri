@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquid Loading Animation</title>
+    <title>Lab Unlock Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
@@ -16,12 +18,13 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #A7fff5, #f5bfd6, #1d1d1f);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1d1d1f, #2a1d3b, #1d1d1f);
             overflow: hidden;
+            transition: background 1s ease;
         }
         
-        .container {
+        /* Loading container */
+        #loadingContainer {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -33,6 +36,7 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 1s ease;
         }
         
         h1 {
@@ -41,15 +45,18 @@
             text-align: center;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             margin-bottom: 10px;
+            background: linear-gradient(45deg, #db87a6, #ec68a1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        
         
         .liquid-container {
             position: relative;
             width: 300px;
             height: 300px;
             margin: 20px 0;
-            background-image:url('./assets/abeer.png');
+                   background-image:url('./assets/abeer.png');
             background-size: contain;
         }
         
@@ -74,7 +81,8 @@
             border-top-left-radius: 50% 30px;
             border-top-right-radius: 50% 30px;
             box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.3);
-            animation: liquid-wave 5s ease-in-out infinite, liquid-fill 4s ease-in-out infinite;
+            animation: liquid-wave 5s ease-in-out infinite, 
+                       liquid-fill 5s ease-in-out forwards;
             opacity: 60%;
         }
         
@@ -105,10 +113,10 @@
         
         .progress-bar {
             height: 100%;
-            width: 45%;
+            width: 0%;
             background: linear-gradient(90deg, #db87a6, #ec68a1);
             border-radius: 4px;
-            animation: progress-pulse 2s infinite;
+            animation: progress-fill 5s ease-in-out forwards;
         }
         
         .loading-text {
@@ -117,15 +125,240 @@
             margin-top: 20px;
             text-align: center;
             animation: text-pulse 1.5s infinite;
-           
         }
         
+        /* Welcome container - initially hidden */
+        #welcomeContainer {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transform: scale(0.9);
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .welcome-title {
+            color: white;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #db87a6, #ec68a1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .game-instructions {
+            color: rgba(255, 255, 255, 0.85);
+            text-align: center;
+            max-width: 500px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .challenge-text {
+            background: rgba(219, 135, 166, 0.2);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2rem;
+            color: #ffc6db;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        .name-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .code-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .code-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #db87a6, #ec68a1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .code-circle:nth-child(1) { animation-delay: 0s; }
+        .code-circle:nth-child(2) { animation-delay: 0.2s; }
+        .code-circle:nth-child(3) { animation-delay: 0.4s; }
+        .code-circle:nth-child(4) { animation-delay: 0.6s; }
+        .code-circle:nth-child(5) { animation-delay: 0.8s; }
+        
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .input-label {
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .name-input {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(219, 135, 166, 0.5);
+        }
+        
+        /* Virtual Keyboard */
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+        }
+        
+        .key {
+            padding: 12px 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .key:hover {
+            background: rgba(219, 135, 166, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .key:active {
+            transform: translateY(1px);
+        }
+        
+        .key.backspace {
+            grid-column: span 2;
+            background: rgba(219, 135, 166, 0.5);
+        }
+        
+        .key.enter {
+            grid-column: span 2;
+            background: rgba(124, 252, 149, 0.3);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #db87a6, #ec68a1);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #db87a6;
+            color: #db87a6;
+        }
+        
+        .hint-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            max-width: 500px;
+            display: none;
+        }
+        
+        .hint-content {
+            color: #ffb86c;
+            line-height: 1.6;
+        }
+        
+        .message {
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+            min-height: 30px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .success-message {
+            color: #7cfc95;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(124, 252, 149, 0.5);
+        }
         
         /* Animations */
         @keyframes liquid-fill {
             0% { height: 40%; }
-            50% { height: 90%; }
-            100% { height: 40%; }
+            100% { height: 90%; }
         }
         
         @keyframes liquid-wave {
@@ -140,9 +373,9 @@
             100% { transform: translateY(-300px) scale(1); opacity: 0; }
         }
         
-        @keyframes progress-pulse {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 0.7; }
+        @keyframes progress-fill {
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
         
         @keyframes text-pulse {
@@ -150,14 +383,40 @@
             50% { opacity: 0.6; }
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.9); }
+        }
+        
+        @keyframes unlockAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(219, 135, 166, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(219, 135, 166, 0); }
+        }
+        
         /* Responsive design */
         @media (max-width: 600px) {
-            .container {
+            #loadingContainer, #welcomeContainer {
                 padding: 20px;
                 width: 95%;
             }
             
-            h1 {
+            h1, .welcome-title {
                 font-size: 2.2rem;
             }
             
@@ -169,14 +428,29 @@
             .progress-container {
                 width: 250px;
             }
+            
+            .game-instructions {
+                font-size: 1rem;
+            }
+            
+            .code-circle {
+                width: 45px;
+                height: 45px;
+                font-size: 1.4rem;
+            }
+            
+            .keyboard {
+                grid-template-columns: repeat(7, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-
+    <!-- Loading Animation Container -->
+    <div id="loadingContainer">
+        <h1>Lab Security System</h1>
+        
         <div class="liquid-container">
-          
             <div class="beaker">
                 <div class="liquid"></div>
                 <div class="bubbles" id="bubbles"></div>
@@ -187,9 +461,89 @@
             <div class="progress-bar"></div>
         </div>
         
-        <div class="loading-text">Loading your content...</div>
+        <div class="loading-text">Loading the Page...</div>
+    </div>
+    
+    <!-- Welcome Container - Hidden Initially -->
+    <div id="welcomeContainer">
+        <h1 class="welcome-title">Lab Unlock Challenge</h1>
         
-       
+        <p class="game-instructions">
+            Welcome <span style="color: #ec68a1;  font-weight: bold;"> to </span> my lab Portfolio.
+            <br>
+             <span style="color: #ec68a1; font-weight: bold;"> Where</span> circuits think, <span style="color: #ecae68; font-weight: bold;">and</span> ideas breathe.
+        </p>
+        
+        <div class="challenge-text">
+            <i class="fas fa-lock"></i> To see the lab, you must solve this puzzle!
+        </div>
+        
+        <div class="name-game">
+            <div class="code-display">
+                <div class="code-circle">1</div>
+                <div class="code-circle">2</div>
+                <div class="code-circle">5</div>
+                <div class="code-circle">5</div>
+                <div class="code-circle">18</div>
+            </div>
+            
+            <div class="input-container">
+                <label for="nameInput" class="input-label">Enter the secret name:</label>
+                <input type="text" id="nameInput" class="name-input" placeholder="Type the name" autocomplete="off" maxlength="5">
+                <div id="message" class="message"></div>
+            </div>
+            
+            <!-- Virtual Keyboard -->
+            <div class="keyboard">
+                <!-- Row 1 -->
+                <div class="key" data-key="Q">Q</div>
+                <div class="key" data-key="W">W</div>
+                <div class="key" data-key="E">E</div>
+                <div class="key" data-key="R">R</div>
+                <div class="key" data-key="T">T</div>
+                <div class="key" data-key="Y">Y</div>
+                <div class="key" data-key="U">U</div>
+                <div class="key" data-key="I">I</div>
+                <div class="key" data-key="O">O</div>
+                <div class="key" data-key="P">P</div>
+                
+                <!-- Row 2 -->
+                <div class="key" data-key="A">A</div>
+                <div class="key" data-key="S">S</div>
+                <div class="key" data-key="D">D</div>
+                <div class="key" data-key="F">F</div>
+                <div class="key" data-key="G">G</div>
+                <div class="key" data-key="H">H</div>
+                <div class="key" data-key="J">J</div>
+                <div class="key" data-key="K">K</div>
+                <div class="key" data-key="L">L</div>
+                
+                <!-- Row 3 -->
+                <div class="key backspace"><i class="fas fa-backspace"></i></div>
+                <div class="key" data-key="Z">Z</div>
+                <div class="key" data-key="X">X</div>
+                <div class="key" data-key="C">C</div>
+                <div class="key" data-key="V">V</div>
+                <div class="key" data-key="B">B</div>
+                <div class="key" data-key="N">N</div>
+                <div class="key" data-key="M">M</div>
+                <div class="key enter">ENTER</div>
+            </div>
+            
+            <div class="controls">
+                <button id="hintBtn" class="btn btn-outline">
+                    <i class="fas fa-lightbulb"></i> Show Hint
+                </button>
+            </div>
+            
+            <div id="hintBox" class="hint-box">
+                <div class="hint-content">
+                    <p><strong>Hint:</strong> The name you need is a 5-letter word that corresponds to the numbers above.</p>
+                    <p>Each number represents the position of the letter in the alphabet (A=1, B=2, etc.).</p>
+                    <p>Combine the letters to form a name. It's the name of the lab's creator.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -223,17 +577,122 @@
         createBubbles();
         
         // Recreate bubbles every 6 seconds to maintain animation
-        setInterval(createBubbles, 6000);
-        
-       
+        const bubbleInterval = setInterval(createBubbles, 6000);
         
         // Create a wave effect on the liquid surface
         const liquid = document.querySelector('.liquid');
-        setInterval(() => {
+        const waveInterval = setInterval(() => {
             const waveHeight = 10 + Math.random() * 15;
             liquid.style.borderTopLeftRadius = `50% ${waveHeight}px`;
             liquid.style.borderTopRightRadius = `50% ${35 - waveHeight}px`;
         }, 2000);
+        
+        // After 5 seconds, show the welcome container
+        setTimeout(() => {
+            // Fade out loading container
+            const loadingContainer = document.getElementById('loadingContainer');
+            loadingContainer.style.animation = 'fadeOut 0.8s ease forwards';
+            
+            // After fade out, show welcome container
+            setTimeout(() => {
+                loadingContainer.style.display = 'none';
+                document.getElementById('welcomeContainer').style.display = 'flex';
+                
+                // Clear intervals
+                clearInterval(bubbleInterval);
+                clearInterval(waveInterval);
+            }, 800);
+        }, 5000);
+        
+        // Game functionality
+        const nameInput = document.getElementById('nameInput');
+        const message = document.getElementById('message');
+        const hintBtn = document.getElementById('hintBtn');
+        const hintBox = document.getElementById('hintBox');
+        
+        // Keyboard functionality
+        document.querySelectorAll('.key').forEach(key => {
+            key.addEventListener('click', () => {
+                const keyValue = key.getAttribute('data-key');
+                
+                if (key.classList.contains('backspace')) {
+                    // Handle backspace
+                    nameInput.value = nameInput.value.slice(0, -1);
+                } else if (key.classList.contains('enter')) {
+                    // Handle enter
+                    checkName();
+                } else if (keyValue) {
+                    // Handle letter keys
+                    if (nameInput.value.length < 5) {
+                        nameInput.value += keyValue;
+                    }
+                }
+            });
+        });
+        
+        // Hint button functionality
+        hintBtn.addEventListener('click', () => {
+            hintBox.style.display = hintBox.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Name unlock game logic
+        function checkName() {
+            const name = nameInput.value.trim();
+            
+            if (name.length === 0) {
+                message.textContent = "Please enter the name";
+                message.style.color = "#ff6b6b";
+                return;
+            }
+            
+            // Convert name to uppercase for consistency
+            const upperName = name.toUpperCase();
+            
+            // Check if the name is "ABEER"
+            if (upperName === "ABEER") {
+                message.textContent = "Access Granted! Welcome to the Lab";
+                message.className = "message success-message";
+                message.style.animation = "unlockAnimation 0.5s ease";
+                
+                // Visual feedback
+                document.body.style.background = "linear-gradient(135deg, #1d1d1f, #2a8c5a, #1d1d1f)";
+                document.getElementById('welcomeContainer').style.background = "rgba(42, 140, 90, 0.15)";
+                
+                // Animate the circles
+                document.querySelectorAll('.code-circle').forEach((circle, index) => {
+                    setTimeout(() => {
+                        circle.style.background = "linear-gradient(45deg, #7cfc95, #2a8c5a)";
+                        circle.style.transform = "scale(1.2)";
+                        setTimeout(() => circle.style.transform = "scale(1)", 300);
+                    }, index * 200);
+                });
+                
+                // Simulate unlocking and redirect
+                setTimeout(() => {
+                    alert("Lab unlocked! Redirecting to main content...");
+                    // In a real implementation, you would redirect to the main site
+                    // window.location.href = "main-lab.html";
+                }, 2000);
+            } else {
+                message.textContent = "Incorrect name! Try again";
+                message.style.color = "#ff6b6b";
+                
+                // Shake animation for incorrect input
+                nameInput.style.animation = "shake 0.5s";
+                setTimeout(() => nameInput.style.animation = "", 500);
+            }
+        }
+        
+        // Add shake animation for incorrect input
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                20%, 60% { transform: translateX(-5px); }
+                40%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
