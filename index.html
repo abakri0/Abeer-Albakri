@@ -451,16 +451,20 @@
             width: 100%;
             max-width: 600px;
             text-align: center;
-        }
-
-        .story-step {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.8s ease;
+                gap: 20px; /* مسافة بين الخطوات */
 
         }
+
+       .story-step {
+    opacity: 1; /* تغيير من 0 إلى 1 */
+    transform: translateY(0); /* تغيير من 10px إلى 0 */
+    transition: none; /* إزالة التحريك */
+    display: none; /* إخفاء غير النشطة */
+    animation: fadeIn 0.5s ease forwards;
+}
 
         .story-step.active {
+            display: block;
             opacity: 1;
             transform: translateY(0);
         }
@@ -509,6 +513,8 @@
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(20px);
+            display: flex;
+            flex-direction: column;
         }
 
         .creator-card.visible {
@@ -525,6 +531,7 @@
             color: #92fe9d;
             font-size: 1.4rem;
             margin: 10px 0;
+            font-weight: bold;
         }
 
         .creator-role {
@@ -533,20 +540,21 @@
         }
 
         .enter-lab-btn {
-            padding: 15px 40px;
+            padding: 10px 20px;
             border: none;
             border-radius: 50px;
             background: linear-gradient(45deg, #00c9ff, #92fe9d);
             color: #1d1d1f;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 20px rgba(0, 201, 255, 0.4);
             margin-top: 20px;
             opacity: 0;
-            transform: translateY(20px);
+
             transition: all 0.8s ease;
+            justify-content: center;
         }
 
         .enter-lab-btn.visible {
@@ -968,78 +976,74 @@
 
             <div class="robot-info">
                 <div id="step1" class="story-step active">
-                    <h2 class="robot-info-title">Meet Your Guide</h2>
+                    <h2 class="robot-info-title">Say Hello to Your Guide</h2>
                     <p class="robot-info-content">
-                        "Hello <span id="visitorNameDisplay"></span>! I'm <span class="highlight">REMO</span>, your
-                        digital companion here at Abeer's Lab."
+                        "Hey <span id='visitorNameDisplay' style="font-weight: bold;color: #ecae68; "></span>! <br> I’m
+                        <span class='highlight'>REMO</span>,
+                        your curious companion in this interactive lab of wonders."
                     </p>
                 </div>
 
                 <div id="step2" class="story-step">
                     <p class="robot-info-content">
-                        "I'm an AI assistant created to welcome visitors and showcase the incredible innovations
-                        happening in this digital laboratory."
+                        "I was crafted with logic, and a tiny spark of imagination — straight from Abeer’s
+                        mind. 💡"
                     </p>
                 </div>
 
                 <div id="step3" class="story-step">
                     <p class="robot-info-content">
-                        "As the <span class="highlight">leader of this digital journal</span>, I'll be your companion as
-                        we explore Abeer's projects, experiments, and breakthroughs."
+                        "My job? To guide you through projects, mini-experiments, and digital stories built from code,
+                        wires, and a whole lot of creativity."
                     </p>
                 </div>
 
                 <div id="step4" class="story-step">
                     <p class="robot-info-content">
-                        "My role is to help you navigate through the lab's wonders and reveal the creative mind behind
-                        all of this."
+                        "You’ll click things, solve things, maybe even break a thing or two (kidding... 😂). <br>
+                        Either way, I’ll be here to help you explore it all."
                     </p>
                 </div>
 
                 <div id="step5" class="story-step">
-                    <h2 class="robot-info-title">The Creative Visionary</h2>
+                    <h2 class="robot-info-title">Meet the Mind Behind It All</h2>
                     <p class="robot-info-content">
-                        "Now let me introduce you to the brilliant mind who created both me and this entire
-                        experience..."
+                        "Before we dive in, let me introduce you to the mastermind who built this world — the builder,
+                        the coder, the imagination engine behind me: <span
+                            style="font-weight: bold;color: #ecae68; ">Abeer</span>."
                     </p>
                 </div>
             </div>
+        </div>
 
-            <div class="robot-creator">
-                <div id="creatorCard1" class="creator-card">
-                    <i class="fas fa-robot" style="font-size: 3rem; color: #00c9ff;"></i>
-                    <div class="creator-name">Remo</div>
-                    <div class="creator-role">Lab Assistant & Guide</div>
-                </div>
+        <div class="robot-creator">
+            <div id="creatorCard1" class="creator-card">
+                <img src="./assets/abeer.png" style="width: auto;" />
+                <div class="creator-name">Abeer Al-bakri</div>
+                <div class="creator-role">Creative Technology Architect</div>
 
-                <div id="creatorCard2" class="creator-card">
-                    <i class="fas fa-user-astronaut" style="font-size: 3rem; color: #92fe9d;"></i>
-                    <div class="creator-name">Abeer</div>
-                    <div class="creator-role">Creative & Creator</div>
-                </div>
-            </div>
-
-            <div class="progress-indicator">
-                <div class="progress-dot active" data-step="1"></div>
-                <div class="progress-dot" data-step="2"></div>
-                <div class="progress-dot" data-step="3"></div>
-                <div class="progress-dot" data-step="4"></div>
-                <div class="progress-dot" data-step="5"></div>
-            </div>
-
-            <div class="controls">
-                <button id="prevBtn" class="story-control">
-                    <i class="fas fa-arrow-left"></i> Previous
-                </button>
-                <button id="nextBtn" class="story-control visible">
-                    Next <i class="fas fa-arrow-right"></i>
+                <button id="enterLabBtn" class="enter-lab-btn">
+                    <i class="fas fa-door-open"></i> Visit Her Lab
                 </button>
             </div>
+        </div>
 
-            <button id="enterLabBtn" class="enter-lab-btn">
-                <i class="fas fa-door-open"></i> Enter the Lab
+        <div class="progress-indicator">
+            <div class="progress-dot active" data-step="1"></div>
+            <div class="progress-dot" data-step="2"></div>
+            <div class="progress-dot" data-step="3"></div>
+            <div class="progress-dot" data-step="4"></div>
+            <div class="progress-dot" data-step="5"></div>
+        </div>
+
+        <div class="controls">
+            <button id="nextBtn" class="story-control visible">
+                Next <i class="fas fa-arrow-right"></i>
             </button>
         </div>
+
+
+    </div>
     </div>
 
 
@@ -1215,15 +1219,15 @@
 
             // Show loading container
             document.getElementById('visitorNameContainer').style.display = 'none';
-            
- // Show robot container with personalized greeting
-    document.getElementById('robotContainer').style.display = 'flex';
-    // Add visitor name to the robot container
-    document.getElementById('visitorNameDisplay').textContent = visitorName;
-    
-    // Change background for robot screen
-    document.body.style.background = "linear-gradient(135deg, #1d1d1f, #0a2a43, #1d1d1f)";
-         
+
+            // Show robot container with personalized greeting
+            document.getElementById('robotContainer').style.display = 'flex';
+            // Add visitor name to the robot container
+            document.getElementById('visitorNameDisplay').textContent = visitorName;
+
+            // Change background for robot screen
+            document.body.style.background = "linear-gradient(135deg, #1d1d1f, #0a2a43, #1d1d1f)";
+
         });
 
         // Handle Enter key in visitor name input
